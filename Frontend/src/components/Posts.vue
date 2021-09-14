@@ -56,7 +56,7 @@
                 </form>
 
                 <!-- LISTE DES COMMENTAIRES -->
-                <div v-for="comment in comments" v-bind:key="comment.id" class="card-body d-flex mb-0 p-0 fst-italic">
+                <div v-for="(comment, index) in comments" v-bind:key="comment.id" class="card-body d-flex mb-0 p-0 fst-italic">
                     <div v-if="comment.postCommentedId==post.id" class="comment d-flex border rounded mx-2 my-1 fs-6">
                     
                         <div id="picture-profil">
@@ -76,12 +76,13 @@
                                     </span>
                                     <ul class="dropdown-menu">
                                         <li v-if="user.is_moderator==1 || user.id==comment.user.id" @click="removeComment(comment, post)" class="dropdown-item" ><i class="fa fa-trash-o"></i> Supprimer</li>
-                                        <li v-if="user.id==comment.user.id" @click="updateComment(comment)" class="dropdown-item" ><i class="fa fa-edit"></i> Modifier</li>
+                                        <li v-if="user.id==comment.user.id" @click="showInputModifyComment(index)" class="dropdown-item" ><i class="fa fa-edit"></i> Modifier</li>
                                     </ul>
                                 </nav>
                                    
                             </div>
-                            <p class="card-text bg-light rounded fs-6"> {{ comment.content }} </p> 
+                            <p v-if="!modifyOn" v-on:dblclick="showInputModifyComment(index)" class="card-text bg-light rounded fs-6"> {{ comment.content }} </p> 
+                            <input v-else v-bind:value="comment.content" v-on:keyup="updateComment(index, $event)" type="text" class="w-75">
                         </div>
                     </div>
                 
@@ -115,7 +116,8 @@
                 user_id:"",  //L'utilisateur qui est connecté
                 textOfComment:'',
                 reveleCreatePost: false, //pour cacher la fenêtre modale de création des posts
-                post:""
+                post: "",
+                modifyOn: false //pour vérifier si on doit modifier un commentaire
             }
         },
         created() {
@@ -157,6 +159,7 @@
 
             //Affichage des commentaires
             showComments(post) {
+                this.modifyOn = false
                 document.getElementById(`${post.id}`).classList.remove('d-none')
                 this.gettingComments(post)
             },
@@ -166,6 +169,22 @@
                 axios.get(`/comments/getComments/${post.id}`) 
                 .then (res => this.comments = res.data )
                 .catch (err => console.log(err))
+            },
+
+            //Affiche zone de saisie pour modifier un commentaire
+            showInputModifyComment() {
+                this.modifyOn = true
+            },
+
+            //Modification d'un commentaire
+            updateComment(index, $event) {
+                if ($event.key == "Enter") {
+                    let value = event.target.value
+                    this.comments[index].content = value
+                    axios.put(`comments/updateComment/${this.comments[index].id}`, this.comments[index])
+                    .then( res => this.modifyOn = false)
+                    .catch (err => console.log(err))
+                }
             },
 
             //Ajout d'un commentaire à un post

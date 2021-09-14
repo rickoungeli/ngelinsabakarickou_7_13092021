@@ -39,3 +39,14 @@ exports.deleteComment = (req, res, next) => {
         res.status(400).send({ error })
     })
 }
+
+//Fonction pour modifier un commentaire
+exports.updateComment = (req, res, next)=>{ 
+    model.User.update({ ...req.body }, {where: {id: req.params.id }})
+    .then( () => {
+        model.User.findOne({ where: {id: req.params.id} })
+        .then((user) => res.status(200).json({'message':'informations modifiée'}))
+        .catch(error => res.status(400).send({ error  }))
+    })
+    .catch(error => res.status(400).send({ error  }))
+}

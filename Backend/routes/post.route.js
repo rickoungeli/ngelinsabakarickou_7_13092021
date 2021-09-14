@@ -11,13 +11,6 @@ router.post('/createPost', auth, multer, postCtrl.createPost) //Route pour crée
 router.delete('/deletePost/:id', auth, postCtrl.deletePost)
 router.put("/updatePost/:id", auth, multer, postCtrl.updatePost) //Route pour renvoyer la sauce ayant l'ID fourni
 
-
-/*
-
-router.delete("/:id", auth, postCtrl.supprimerSauce) //Route pour supprimer la sauce ayant l'ID fourni
-router.post("/:id/like", auth, postCtrl.aimerSauce) //Route pour définir le statut "J'aime" pour userID fourni
-*/
-
 module.exports = router
 
 
