@@ -8,6 +8,7 @@
         </p>
 
         <h3>Se connecter</h3>
+        <p class="alert alert-danger d-none mt-1" id="login-message"></p>
         <div class="d-inline-flex align-middle text-center ">
             <span class="mr-2 mb-2 fsize">Vous n'avez pas de compte?</span> <router-link to="/signup" class="nav-link p-0 fsize">S'inscrire</router-link>
         </div>
@@ -53,25 +54,20 @@
                 }
             },
 
-            watch: {
-                email() {
-                    //console.log(this.email);
-                }
-            },
-
             handleSubmit: function() {
                 if(this.email != "" && this.password != "") {
-                    axios.post('users/login', {
-                        email: this.email, 
-                        password: this.password
-                    })
+                    axios.post('users/login', { email: this.email, password: this.password })
                     .then (res => {
                         localStorage.setItem('token', res.data.token)
                         localStorage.setItem('user', JSON.stringify(res.data.user))
                         this.$store.dispatch('user', res.data.user)
                         this.$router.push('/')
                     })
-                    .catch (err => console.log(err))
+                    .catch (() => {
+                        let divMessage = document.querySelector('#login-message')
+                        divMessage.innerText = "L'email ou le mot de passe sont incorrects"
+                        divMessage.classList.remove('d-none')
+                    })
                 }
             } 
         }

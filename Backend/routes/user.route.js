@@ -10,5 +10,8 @@ router.get("/", userCtrl.EnvoyerTousLesUsers)
 router.post('/signup', userCtrl.signup) //Route pour créer une nouvel utilisateur
 router.post('/login', userCtrl.login) //Route pour connecter un utilisateur
 router.get('/:id', auth, userCtrl.getUser) //Route pour récupérer un utilisateur précis
-router.put('/:id/addProfilPicture', auth, multer, userCtrl.addProfilPicture)
+router.put('/:id/updateUserPicture', auth, multer, userCtrl.updateUserPicture) //Route pour modifier la photo de profil
+router.put('/:id/updateUserInfos', auth, userCtrl.updateUserInfos) //Route pour modifier les infos de l'utilisateur
+router.put('/:id/updateUserPassword', auth, userCtrl.updateUserPassword) //Route pour modifier les infos de l'utilisateur
+
 module.exports = router

@@ -59,9 +59,6 @@ exports.deletePost = (req, res, next) => {
 
 //Middleware (fonction) pour modifier un post
 exports.updatePost = (req, res, next) => {
-    console.log(req.body);
-    console.log(req.file)
-    console.log('Bonsoir')
     if(req.file) {
         model.Post.update({
                 urlMedia: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,

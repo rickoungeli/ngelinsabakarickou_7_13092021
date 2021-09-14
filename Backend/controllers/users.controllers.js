@@ -47,7 +47,7 @@ exports.login = (req, res, next)=>{
         bcrypt.compare(req.body.password, user.password)
         .then(valid => {
             if(!valid) {
-                return res.status(401).send({ error: "Mot de passe incorrect"})
+                return res.status(401).send({ 'error': "Mot de passe incorrect"})
             }
             res.status(200).json({
                 user: user,
@@ -58,51 +58,61 @@ exports.login = (req, res, next)=>{
         })
         .catch(error => res.status(500).send({ error }))
     })
-    .catch(error => {
-        console.log(error);
-        res.status(500).send({ error })
-    })
+    .catch(error => res.status(500).send({ 'error': 'erreur' }))
+}
+
+//Fonction pour récupérer un utilisateur précis
+exports.getUser = (req, res, next)=>{ 
+    model.User.findByPk(req.params.id)
+    .then( user => res.status(200).send(user))
+    .catch(error => res.status(400).send({ error  }))
 }
 
 //Fonction pour modifier la photo de profil
-exports.addProfilPicture = (req, res, next)=>{ 
+exports.updateUserPicture = (req, res, next)=>{ 
     imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     model.User.update({picture_url: imageUrl}, {where: {id: req.params.id }})
     .then( () => {
-        console.log(req.params.id)
         model.User.findOne({ where: {id: req.params.id} })
-        .then((user) => {
-           
-            res.status(200).json({'imageUrl':user.picture_url, 'message':'Photo enregistrée'})
-        })
+        .then((user) => res.status(200).json({'imageUrl':user.picture_url, 'message':'Photo enregistrée'}))
         .catch(error => res.status(400).send({ error  }))
     })
     .catch(error => res.status(400).send({ error  }))
 }
 
-/*
-if(req.file) {
-    req.body.user = JSON.parse(req.body.user)
-    req.body.user.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    sauceSchema.updateOne({_id: req.params.id}, {...req.body.sauce, _id: req.params.id} )
-    .then( () =>res.status(200).send({'message': 'Sauce modifiée' }) )       
-    .catch(error => res.status(400).send({ error }))
-} else {
-    sauceSchema.updateOne({_id: req.params.id}, {...req.body, _id: req.params.id} ) //la méthode updateOne demande deux paramètres
-    .then( () =>res.status(200).send({'message': 'Sauce modifiée' }) )       
-    .catch(error => res.status(400).send({ error }))
-} 
-*/
+//Fonction pour modifier les informations de l'utilisateur
+exports.updateUserInfos = (req, res, next)=>{ 
+    model.User.update({ ...req.body }, {where: {id: req.params.id }})
+    .then( () => {
+        model.User.findOne({ where: {id: req.params.id} })
+        .then((user) => res.status(200).json({'message':'informations modifiée'}))
+        .catch(error => res.status(400).send({ error  }))
+    })
+    .catch(error => res.status(400).send({ error  }))
+}
 
-//Fonction pour récupérer un utilisateur précis
-exports.getUser = (req, res, next)=>{ 
-    console.log('bonsoir')
-    console.log(req.params.id)
-    model.User.findByPk(req.params.id)
+//Fonction pour modifier le mot de passe de l'utilisateur
+exports.updateUserPassword = (req, res, next)=>{ 
+    //Je cherche l'utilisateur dans la bdd
+    model.User.findOne({ where: {id: req.params.id} })
     .then( user => {
-        console.log(user.picture_url)
-        res.status(200).send(user) })
-    .catch(error => {
-        console.log(error)
-        res.status(400).send({ error  })})
+        //Si je trouve, je compare l'ancien mot de passe envoyé et celui trouvé dans la bdd
+        bcrypt.compare(req.body.oldPwd, user.password)
+        .then(valid => {
+            if(!valid) { //Si les mots de passe de correspondent pas
+                return res.status(401).send({ error: "Mot de passe incorrect"})
+            }
+
+            //Si les mots de passe correspondent, je crypte le nouveau mp et je l'enregistre
+            bcrypt.hash(req.body.newPwd, 5)
+            .then(hash => {
+                model.User.update({ password: hash}, {where: {id: req.params.id }})
+                .then((res) => res.status(200).send({'message':'mot de passe modifié'}))
+                .catch(error => res.status(400).send({ error  }))
+            })
+            .catch(error => res.status(500).send({  error  })) 
+        }) 
+        .catch(error => res.status(500).send({  error  }))
+    })  
+    .catch(error => res.status(500).send({  error  }))  
 }
