@@ -3,7 +3,7 @@ const model = require('../models/models')
 
 //Middleware pour ajouter un commentaire
 exports.addComment = (req, res, next) => {
-    console.log('demande ajour de commentaire')
+    console.log('demande ajout de commentaire')
     model.Comment.create({
         //urlMedia: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         content: req.body.textOfComment,

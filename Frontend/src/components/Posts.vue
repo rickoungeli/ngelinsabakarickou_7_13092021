@@ -18,16 +18,16 @@
             </section>
 
              <!-- MENU PUBLICATIONS -->
-            <nav v-if="user.is_moderator==1 || user.id==post.userCreatingId" class="nav-item dropdown me-2 rounded-circle  icone-menu-post">
-                <div class="btn rounded-circle text-center " id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
-                    <i class="fas fa-ellipsis-v align-middle text-white"></i>
-                </div>
-                <ul class="dropdown-menu bg-dark post-menu ">
-                    <li v-if="user.id==post.user.id" v-on:click="toggleUpdatePost(post)" class="dropdown-item text-white"><i class="fa fa-paste"></i> Modifier </li>
-                    <li><hr class="dropdown-divider text-white"></li>
-                    <li v-if="user.is_moderator==1 || user.id==post.user.id" @click="removePost(post)" class="dropdown-item text-white"><i class="fa fa-trash-o"></i>  Supprimer </li>
-                </ul>
-            </nav>
+                <nav v-if="user.is_moderator==1 || user.id==post.userCreatingId" class="nav-item dropdown me-2 rounded-circle  icone-menu-post">
+                    <div class="btn rounded-circle text-center " id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
+                        <i class="fas fa-ellipsis-v align-middle text-white"></i>
+                    </div>
+                    <ul class="dropdown-menu bg-dark post-menu ">
+                        <li v-if="user.id==post.user.id" v-on:click="toggleUpdatePost(post)" class="dropdown-item text-white"><i class="fa fa-paste"></i> Modifier </li>
+                        <li><hr class="dropdown-divider text-white"></li>
+                        <li v-if="user.is_moderator==1 || user.id==post.user.id" @click="removePost(post)" class="dropdown-item text-white"><i class="fa fa-trash-o"></i>  Supprimer </li>
+                    </ul>
+                </nav>
 
                          
              <!-- PUBLICATIONS  -->
@@ -133,7 +133,7 @@
 
             // Ouvrir/fermer la fenêtre modale de création des posts
             toggleCreatePost(){   
-                this.post = ""
+                //this.post = ""
                 this.reveleCreatePost = !this.reveleCreatePost
             },
 
@@ -182,14 +182,14 @@
                     let value = event.target.value
                     this.comments[index].content = value
                     axios.put(`comments/updateComment/${this.comments[index].id}`, this.comments[index])
-                    .then( res => this.modifyOn = false)
+                    .then( () => this.modifyOn = false)
                     .catch (err => console.log(err))
                 }
             },
 
             //Ajout d'un commentaire à un post
             addComment(post) {
-                if(this.textOfComment != "" ) {
+                if(this.textOfComment ) {
                     axios.post('comments/addComment', {
                         textOfComment: this.textOfComment,
                         userId: this.user.id,
