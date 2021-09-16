@@ -1,12 +1,12 @@
 <template>
-    <main class="container mt-2">
+    <main >
 
         <!-- ZONE DE SAISIE D'UNE PUBLICATION -->
-        <input v-on:click="toggleCreatePost" type="text" placeholder="Votre publication" class="form-control mb-2 w-75 mx-auto" >
+        <input v-on:click="toggleCreatePost" type="text" placeholder="Votre publication" class="form-control mb-2 mx-auto perso-css-form" >
 
-        <div class="card mb-2 border-2 border-secondary w-75 mx-auto" v-for="(post) in posts" v-bind:key="post.id">
+        <div class="card mb-2 border-2 border-secondary mx-auto perso-css-form" v-for="(post) in posts" v-bind:key="post.id">
             <!-- L UTILISATEUR QUI A PUBLIE -->
-            <section class="card-title d-flex justify-content-between mb-2 bg-secondary" id='user-infos'>
+            <section class="card-title d-flex justify-content-between mb-2 bg-secondary " id='user-infos'>
                 <div class="d-flex"> 
                     <img v-if="post.user.picture_url" :src="post.user.picture_url" class="card-img-top profil-picture rounded-circle" alt="">
                     <img v-if="!post.user.picture_url" src="../../public/images/profil_picture.png" class="card-img-top profil-picture rounded-circle" alt=""> 
@@ -90,10 +90,6 @@
             </section>
 
         </div>
-
-        <div class="w-75 p-2 bg-secondary" id="update-comment-div">
-            <input type="text" v-model.trim="textOfComment" class="form-control m-2 w-75 mx-auto" placeholder="Votre commentaire">
-        </div>
         
         <Createpost v-bind:reveleCreatePost="reveleCreatePost" v-bind:toggleCreatePost="toggleCreatePost" :post="post" @custom-event="gettingPosts"></Createpost>
     </main>
@@ -102,7 +98,7 @@
 <script>
     import axios from 'axios'
     import {mapGetters} from 'vuex'
-    import Createpost from './Createpost.vue'    
+    import Createpost from './Createpost.vue'   
 
     export default {
         name: 'Publications',
@@ -117,7 +113,8 @@
                 textOfComment:'',
                 reveleCreatePost: false, //pour cacher la fenêtre modale de création des posts
                 post: "",
-                modifyOn: false //pour vérifier si on doit modifier un commentaire
+                modifyOn: false, //pour vérifier si on doit modifier un commentaire
+                date: ""
             }
         },
         created() {

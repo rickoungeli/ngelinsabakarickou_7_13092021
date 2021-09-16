@@ -1,11 +1,11 @@
 <template>
-     <form @submit.prevent="handleSubmit" class="form w-50">
+     <form @submit.prevent="handleSubmit" class="form bg-light p-3 mx-auto rounded border border-secondary perso-css-form">
 
-        <h3 class="text-center">Se connecter</h3>
-        <p class="mr-2 mb-2 fs-6 text-center">Vous n'avez pas de compte? <router-link to="/signup" class="nav-link p-0 fsize d-inline">S'inscrire</router-link></p>
+        <h1 class="text-center">Se connecter</h1>
+        <p class="mr-2 mb-2 text-center title7">Vous n'avez pas de compte? <router-link to="/signup" class="nav-link p-0 fsize d-inline">S'inscrire</router-link></p>
         <p v-if="error.email || error.pwd || error.login" class="alert alert-danger title7" id="message">Il y a des erreurs, veuillez vérifier votre saisie</p>
         
-        <div class="form-group mb-2 mt-2 d-flex">
+        <div class="form-group mb-2 mt-4 d-flex">
             <label class="w-25">Email</label>
             <div class="d-flex flex-column w-75">
                 <input v-model.trim="user.email" type="text" class="form-control" id="email" placeholder="Email" />
@@ -114,10 +114,6 @@
 
 <style scoped>
     
-    form {
-        width: 50%;
-        margin: 0 auto;
-        font-size: 1em;
-    }
+
 
 </style>

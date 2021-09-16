@@ -1,8 +1,8 @@
 <template>
-    <div class="w-md-100 w-lg-50">
-        <div v-if="user"> <Posts /> </div>
-        <h3 v-if="!user"> VEUILLEZ VOUS CONNECTER ! </h3>
-    </div>
+    <main class="bg-light ">
+        <h1 v-if="!user" class="text-center p-3"> VEUILLEZ VOUS CONNECTER ! </h1>
+        <section v-if="user"> <Posts /> </section>
+    </main>
 </template>
 
 <script>
@@ -19,3 +19,8 @@
         }
     }
 </script>
+
+<style>
+
+
+</style>

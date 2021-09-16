@@ -1,7 +1,8 @@
 <template>
-     <form @submit.prevent="handleSubmit" class="form w-50">
-        <h3 class="text-center">Inscription</h3>
-        <p class="mr-2 mb-2 fs-6 text-center">Vous avez déjà un compte? <router-link to="/login" class="nav-link p-0 fsize d-inline">Se connecter</router-link></p>
+     <form @submit.prevent="handleSubmit" class="form bg-light p-3 mx-auto rounded border border-secondary perso-css-form">
+
+        <h1 class="text-center">S'inscrire</h1>
+        <p class="mr-2 mb-2 text-center  title7">Vous avez déjà un compte? <router-link to="/login" class="nav-link p-0 fsize d-inline">Se connecter</router-link></p>
         <p v-if="error.firstname || error.name || error.email || error.password ||error.passwordConfirm || error.login" class="alert alert-danger title7 " id="message">Il y a des erreurs, veuillez vérifier votre saisie</p>
         
         <div class="form-group mb-2 mt-2 d-flex">

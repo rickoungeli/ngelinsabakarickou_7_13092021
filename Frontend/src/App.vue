@@ -1,14 +1,14 @@
 <template>
-  <div id="app" class="mx-auto">
-    <Nav/>
-    <div class="faux-div"></div>
-    <div class="container" id="container">
-      <div class="bg-light rounded p-2 ">
+  <main id="app">
+
+    <div class="container w-100" >
+      <Nav/>
+      <div class="bg-light body-min-height perso-css-body">
         <router-view />
       </div>
       
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -32,6 +32,8 @@
   
   *, ::before, ::after {
     box-sizing: border-box;
+    padding: 0;
+    margin : 0;
   }
 
   body {
@@ -39,40 +41,25 @@
     border-color: red !important;
   }
 
-  h1, h2, h3, h4, h5, h6, label, span {
+  h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
   }
-
-  .navbar-light {
-    background-color: #fff;
-    box-shadow: 0px 14px 20px rgba(34, 35, 58, 0.2);
+  h1 {
+    font-size: 2em;
   }
 
-  .container .form-control:focus {
+  #container {
+    min-height: 700px !important;
+  
+  }
+
+  .body-min-height {
+      min-height: 100vh;
+  }
+
+  .form-control:focus {
     border-color: #167bff;
     box-shadow: none;
-  }
-
-  .custom-control-label {
-    font-weight: 400;
-  }
-
-  .forgot-password, 
-  .forgot-password a {
-    text-align: right;
-    font-size: 13px;
-    padding-top: 10px;
-    color: #7f7d7d;
-    margin: 0;
-  }
-
-  .forgot-password a {
-    color: #167bff;
-  }
-
-  .faux-div {
-    width: 100%;
-    height: 100px;
   }
 
   .profil-picture {
@@ -85,27 +72,29 @@
         margin: 3px;
   }
 
-      .title7 {
-        font-size: 0.8rem;
-        font-style: italic;
+  .title7 {
+    font-size: 0.8rem;
+    font-style: italic;
+  }
+  
+  .perso-css-body {
+    padding-top: 120px;
+  }
+    .perso-css-form {
+        font-size: .8em;
+        width: 90%;
     }
-
-  #container {
-    min-height: 1800px !important;
-  }
-   nav, .container {
-    width: 100%;
-  }
-  @media screen and (min-width: 768px) {
-    nav, .container {
-    width: 768px;
-    margin: 0 auto;
+    @media screen and (min-width: 768px) {
+        .perso-css-form {
+            font-size: 1em;
+            width: 75%;
+        }
     }
-  }
-  @media screen and (min-width: 1200px) {
-    nav, .container {
-    width: 1000px;
-    margin: 0 auto;
+    @media screen and (min-width: 992px) {
+        .perso-css-form {
+            font-size: 1em;
+            width: 60%;
+        }
     }
-  }
+  
 </style>
