@@ -2,17 +2,17 @@
     <main class="container mt-2">
 
         <!-- ZONE DE SAISIE D'UNE PUBLICATION -->
-        <input v-on:click="toggleCreatePost" type="text" placeholder="Votre publication" class="form-control mb-2 w-100" >
+        <input v-on:click="toggleCreatePost" type="text" placeholder="Votre publication" class="form-control mb-2 w-75 mx-auto" >
 
-        <div class="card mb-2 border-2 border-secondary" v-for="(post) in posts" v-bind:key="post.id">
+        <div class="card mb-2 border-2 border-secondary w-75 mx-auto" v-for="(post) in posts" v-bind:key="post.id">
             <!-- L UTILISATEUR QUI A PUBLIE -->
             <section class="card-title d-flex justify-content-between mb-2 bg-secondary" id='user-infos'>
-                <div class="d-flex">
+                <div class="d-flex"> 
                     <img v-if="post.user.picture_url" :src="post.user.picture_url" class="card-img-top profil-picture rounded-circle" alt="">
                     <img v-if="!post.user.picture_url" src="../../public/images/profil_picture.png" class="card-img-top profil-picture rounded-circle" alt=""> 
                     <div class="card-text">
                         <p class="fw-bold m-0 text-shadow"> {{ post.user.firstname }} {{ post.user.name }}  </p>
-                        <small class=" m-0"> Publiée le {{ post.createdAt }} </small>
+                        <small class=" m-0"> Publiée le {{ post.createdAt | toLocaleDateString('fr-FR') }} </small>
                     </div>
                 </div>
             </section>
@@ -130,10 +130,10 @@
 
         },
         methods: {
-
+         
             // Ouvrir/fermer la fenêtre modale de création des posts
             toggleCreatePost(){   
-                //this.post = ""
+                this.post = ""
                 this.reveleCreatePost = !this.reveleCreatePost
             },
 

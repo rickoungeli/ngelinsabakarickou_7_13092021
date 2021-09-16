@@ -2,7 +2,7 @@
   <div id="app" class="mx-auto">
     <Nav/>
     <div class="faux-div"></div>
-    <div class="container ">
+    <div class="container" id="container">
       <div class="bg-light rounded p-2 ">
         <router-view />
       </div>
@@ -19,11 +19,11 @@
     components: {
       Nav
     },
-    
+        
     async beforeCreated() {
       const res = JSON.parse(localStorage.getItem('user'))
       this.$store.dispatch('user', res.data)
-    }
+    },
   }
 </script>
 
@@ -36,21 +36,11 @@
 
   body {
     background: #1C8EF9 !important;
-    min-height: 100vh;
-    display: flex;
-    font-weight: 400;
-    font-family: 'Fira Sans', sans-serif;
-    margin: 0 auto !important;
+    border-color: red !important;
   }
 
   h1, h2, h3, h4, h5, h6, label, span {
     font-weight: 500;
-    font-family: 'Fira Sans', sans-serif;
-  }
-
-  body, html,  #rrot {
-    width: 100%;
-    height: 100%;
   }
 
   .navbar-light {
@@ -61,13 +51,6 @@
   .container .form-control:focus {
     border-color: #167bff;
     box-shadow: none;
-  }
-
-  .container h3 {
-    text-align: center;
-    margin: 0;
-    line-height: 1;
-    padding-bottom: 0px;
   }
 
   .custom-control-label {
@@ -95,5 +78,34 @@
   .profil-picture {
         width: 50px;
         margin: 5px;
+  }
+
+  .profil-picture1 {
+        width: 30px;
+        margin: 3px;
+  }
+
+      .title7 {
+        font-size: 0.8rem;
+        font-style: italic;
     }
+
+  #container {
+    min-height: 1800px !important;
+  }
+   nav, .container {
+    width: 100%;
+  }
+  @media screen and (min-width: 768px) {
+    nav, .container {
+    width: 768px;
+    margin: 0 auto;
+    }
+  }
+  @media screen and (min-width: 1200px) {
+    nav, .container {
+    width: 1000px;
+    margin: 0 auto;
+    }
+  }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="w-md-100 w-lg-50">
         <div v-if="user"> <Posts /> </div>
         <h3 v-if="!user"> VEUILLEZ VOUS CONNECTER ! </h3>
     </div>

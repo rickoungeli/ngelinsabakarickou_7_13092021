@@ -1,36 +1,50 @@
 <template>
-     <form @submit.prevent="checkUser">
-        <p v-if="errors.length" class="alert alert-danger">
-            Il y a des erreurs :
-            <ul>
-                <li v-for="error in errors" :key="error"> {{ error }} </li>
-            </ul>
-        </p>
-         <h3>Inscription</h3>
-            <div class="form-group">
-                <label>Prénom</label>
-                <input type="text" class="form-control" v-model.trim="firstname" placeholder="Prénom" />
+     <form @submit.prevent="handleSubmit" class="form w-50">
+        <h3 class="text-center">Inscription</h3>
+        <p class="mr-2 mb-2 fs-6 text-center">Vous avez déjà un compte? <router-link to="/login" class="nav-link p-0 fsize d-inline">Se connecter</router-link></p>
+        <p v-if="error.firstname || error.name || error.email || error.password ||error.passwordConfirm || error.login" class="alert alert-danger title7 " id="message">Il y a des erreurs, veuillez vérifier votre saisie</p>
+        
+        <div class="form-group mb-2 mt-2 d-flex">
+            <label class="w-25">Prénom</label>
+            <div class="d-flex flex-column w-75">
+                <input v-model.trim="user.firstname" type="text" class="form-control" id="firstname" placeholder="Prénom" />
+                <p class="title7 text-danger d-none mb-0" id="message-firstname">{{message.firstname}}</p>
             </div>
-            <div class="form-group">
-                <label>Nom</label>
-                <input type="text" class="form-control" v-model.trim="name" placeholder="Nom" />
+        </div>
+        
+        <div class="form-group mb-2 mt-2 d-flex">
+            <label class="w-25">Nom</label>
+            <div class="d-flex flex-column w-75">
+                <input v-model.trim="user.name" type="text" class="form-control" id="name" placeholder="Nom" />
+                <p class="title7 text-danger d-none mb-0" id="message-name">{{message.name}}</p>
             </div>
-            <div class="form-group">
-                <label>Email</label>
-                <input type="text" class="form-control" v-model.trim="email" placeholder="Email" />
+        </div>
+        
+        <div class="form-group mb-2 mt-2 d-flex">
+            <label class="w-25">Email</label>
+            <div class="d-flex flex-column w-75">
+                <input v-model.trim="user.email" type="text" class="form-control" id="email" placeholder="Email" />
+                <p class="title7 text-danger d-none mb-0" id="message-email">{{message.email}}</p>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label>Mot de passe</label>
-                <input type="password" class="form-control" v-model.trim="password" placeholder="Mot de passe" />
+        <div class="form-group mb-2 d-flex">
+            <label class="w-25">Mot de passe</label>
+            <div class="d-flex flex-column w-75">
+                <input v-model.trim="user.password" type="password" class="form-control" id="pwd" placeholder="Mot de passe" />
+                <p class="title7 text-danger d-none mb-0" id="message-pwd">{{message.password}}</p>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label>Confirmer mot de passe</label>
-                <input type="password" class="form-control" v-model.trim="password_confirm" placeholder="Confirmer mot de passe" />
+        <div class="form-group mb-2 d-flex">
+            <label class="w-25">Confirmer Mot de passe</label>
+            <div class="d-flex flex-column w-75">
+                <input v-model.trim="user.passwordConfirm" type="password" class="form-control" id="pwd-2" placeholder="Mot de passe" />
+                <p class="title7 text-danger d-none mb-0" id="message-pwd-2">{{message.passwordConfirm}}</p>
             </div>
+        </div>
 
-            <button class="btn btn-primary btn-block">S'inscrire</button>
+        <button class="btn btn-primary btn-block">S'inscrire</button>
 
      </form>
 </template>
@@ -42,49 +56,159 @@
         name: 'Register',
         data() {
             return {
-                firstname: '',
-                name: '',
-                email: '',
-                password: '',
-                password_confirm: '',
-                errors: []
+                user: {
+                    firstname: '',
+                    name: '',
+                    email: '',
+                    password: '',
+                    passwordConfirm: '',
+                },
+                message: {
+                    firstname: '',
+                    name: '',
+                    email: '',
+                    password: '',
+                    passwordConfirm: '',
+                },
+                error: {
+                    firstname: false,
+                    name: false,
+                    email: false,
+                    password: false,
+                    passwordConfirm: false,
+                    login: false
+                },
             }
         },
         methods: {
 
-            checkUser: function() {
-                this.errors = []
-                if (!this.firstname || !this.name || !this.email || !this.password) { this.errors.push("Tous les champs sont obligatoires") }
-                if (this.firstname && (this.firstname.length<2 || this.firstname>30)) { this.errors.push("Le prénom doit avoir entre 2 et 30 caracères") }
-                if (this.name && (this.name.length<2 || this.name>50)) { this.errors.push("Le nom doit avoir entre 2 et 50 caracères") }
-                if (this.password && (this.password.length < 3 || this.password.lenght > 20 )) { this.errors.push("Le mot de passe doit comprendre entre 3 et 20 caractères")}
-                var regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                if (this.email && !regex.test(this.email) ) {this.errors.push("L'email saisi est incorrect")}
-                if (this.password != this.password_confirm) { this.errors.push("Les mots de passe ne correspondent pas")}
-
-                if(!this.errors.length) {
-                    this.handleSubmit()
-                }
-                
-                
-
-            },
             handleSubmit: function() {
-                if(this.email != "" && this.password != "" && this.password_confirm != "") {
+                this.checkInput()
+                if(!this.error.firstname && !this.error.name && !this.error.email && !this.error.password &&  !this.error.passwordConfirm) {
                     axios.post('users/signup', {
-                        firstname: this.firstname,
-                        name: this.name,
-                        email: this.email,
-                        password: this.password,
-                        password_confirm: this.password_confirm
+                        firstname: this.user.firstname,
+                        name: this.user.name,
+                        email: this.user.email,
+                        password: this.user.password,
+                        password_confirm: this.user.passwordConfirm
                     })
                     .then (res => {
                         console.log(res);
                         this.$router.push('/login')
                     })
-                    .catch (err => console.log(err))
+                    .catch (error => {
+                        console.log(error);
+                        this.error.login = true
+                        document.querySelector('#message').innerHtml = "Il y a eu un problème"
+                    })
                 }
-            } 
+            },
+
+            checkInput: function() {
+                //Check name
+                if(!this.user.firstname) {
+                    this.error.firstname = true
+                    this.message.firstname = "Le prénom ne peut pas être vide"
+                    document.querySelector('#message-firstname').classList.remove('d-none') 
+                    document.querySelector('#firstname').classList.add('border-danger') 
+                }
+                else if(this.user.firstname && (this.user.firstname.length<2 || this.user.firstname.length>30)) {
+                    this.error.firstname = true
+                    this.message.firstname = "Le prénom doit avoir entre 2 et 30 caractères"
+                    document.querySelector('#message-firstname').classList.remove('d-none') 
+                    document.querySelector('#firstname').classList.add('border-danger') 
+                }
+                else {
+                    this.error.firstname = false
+                    document.querySelector('#message-firstname').classList.add('d-none') 
+                    document.querySelector('#firstname').classList.remove('border-danger') 
+                }
+
+                if(!this.user.name) {
+                    this.error.name = true
+                    this.message.name = "nom ne peut pas être vide"
+                    document.querySelector('#message-name').classList.remove('d-none') 
+                    document.querySelector('#name').classList.add('border-danger') 
+                }
+                else if(this.user.name && (this.user.name.length<2 || this.user.name.length>50)) {
+                    this.error.name = true
+                    this.message.name = "Le nom doit avoir entre 2 et 50 caractères"
+                    document.querySelector('#message-name').classList.remove('d-none') 
+                    document.querySelector('#name').classList.add('border-danger') 
+                }
+                else {
+                    this.error.name = false
+                    document.querySelector('#message-name').classList.add('d-none') 
+                    document.querySelector('#name').classList.remove('border-danger') 
+                }
+
+                //Check email
+               var regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                if ( !this.user.email) {
+                    this.error.email = true
+                    this.message.email = "L'email ne peut pas être vide"
+                    document.querySelector('#message-email').classList.remove('d-none') 
+                    document.querySelector('#email').classList.add('border-danger') 
+                }
+                else if (this.user.email && !regex.test(this.user.email)) {
+                    this.error.email = true
+                    this.message.email = "L'email est incorrect"
+                    document.querySelector('#message-email').classList.remove('d-none') 
+                    document.querySelector('#email').classList.add('border-danger') 
+                }
+                else {
+                    this.error.email = false
+                    document.querySelector('#message-email').classList.add('d-none')
+                    document.querySelector('#email').classList.remove('border-danger')  
+                }
+
+                //Check password
+                if(!this.user.password) {
+                    this.error.password = true
+                    this.message.password = "Le mot de passe ne peut pas être vide"
+                    document.querySelector('#message-pwd').classList.remove('d-none') 
+                    document.querySelector('#pwd').classList.add('border-danger') 
+                }
+                else if(this.user.password && (this.user.password.length<3 || this.user.password.length>20)) {
+                    this.error.password = true
+                    this.message.password = "Le mot de passe doit avoir entre 3 et 20 caractères"
+                    document.querySelector('#message-pwd').classList.remove('d-none') 
+                    document.querySelector('#pwd').classList.add('border-danger') 
+                }
+                else {
+                    this.error.password = false
+                    document.querySelector('#message-pwd').classList.add('d-none') 
+                    document.querySelector('#pwd').classList.remove('border-danger') 
+                }
+
+                //Check passwordConfirm
+                if(!this.user.passwordConfirm) {
+                    this.error.passwordConfirm = true
+                    this.message.passwordConfirm = "Le mot de passe ne peut pas être vide"
+                    document.querySelector('#message-pwd-2').classList.remove('d-none') 
+                    document.querySelector('#pwd-2').classList.add('border-danger') 
+                }
+                else if(this.user.passwordConfirm && (this.user.passwordConfirm.length<3 || this.user.passwordConfirm.length>20)) {
+                    this.error.passwordConfirm = true
+                    this.message.passwordConfirm = "Le mot de passe doit avoir entre 3 et 20 caractères"
+                    document.querySelector('#message-pwd-2').classList.remove('d-none') 
+                    document.querySelector('#pwd-2').classList.add('border-danger') 
+                }
+                else {
+                    if( this.user.password !== this.user.passwordConfirm) {
+                        this.error.passwordConfirm = true
+                        this.message.passwordConfirm = "Les mots de passe ne correspondent pas"
+                        document.querySelector('#message-pwd-2').classList.remove('d-none') 
+                        document.querySelector('#pwd-2').classList.add('border-danger') 
+                    }
+                    else {
+                        this.message.passwordConfirm = ""
+                        this.error.passwordConfirm = false
+                        document.querySelector('#message-pwd-2').classList.add('d-none') 
+                        document.querySelector('#pwd-2').classList.remove('border-danger') 
+                    }
+                }
+            },
         }
     }
 </script>

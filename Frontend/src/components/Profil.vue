@@ -355,8 +355,6 @@
     input {
         width: 60%;
     }
-    .title7 {
-        font-size: 0.7rem
-    }
+
 
 </style>
