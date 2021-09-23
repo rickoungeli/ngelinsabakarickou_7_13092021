@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import './axios'
 import store from './store/index'
+import VueLuxon from "vue-luxon"
 
 Vue.config.productionTip = false
 
@@ -12,8 +13,11 @@ new Vue({
   store,
   render: h => h(App),
 }).$mount('#app')
-/*
-app.$on('login', () => { 
-  console.log('ok')
+
+Vue.use(VueLuxon, {
+  input: {
+      zone: "utc",
+      format: "iso"
+  },
+  output: "short"
 })
-*/

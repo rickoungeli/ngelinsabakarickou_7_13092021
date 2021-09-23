@@ -10,10 +10,7 @@ exports.addComment = (req, res, next) => {
         userCommentingId: req.body.userId,
         postCommentedId: req.body.postId
     })
-    .then((comment) => {
-        console.log(comment)
-        res.status(201).send({comment, 'message': 'commentaire enregistrée'})
-    })
+    .then((comment) => {res.status(201).send({comment, 'message': 'commentaire enregistrée'})})
     .catch(error => res.status(400).send({ error }))
 }
 
@@ -31,13 +28,8 @@ exports.getComments = (req, res, next) => {
 //Middleware (fonction) pour supprimer un commentaire
 exports.deleteComment = (req, res, next) => {
     model.Comment.destroy({where: { id: req.params.id }})
-    .then( (comment) =>{
-        console.log(comment);
-        res.status(200).send({ 'message': 'Commentaire supprimé'})})
-    .catch(error => {
-        console.log(error);
-        res.status(400).send({ error })
-    })
+    .then( (comment) =>{res.status(200).send({ 'message': 'Commentaire supprimé'})})
+    .catch(error => {res.status(400).send({ error })})
 }
 
 //Fonction pour modifier un commentaire

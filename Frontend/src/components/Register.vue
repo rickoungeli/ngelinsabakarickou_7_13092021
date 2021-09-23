@@ -86,19 +86,16 @@
             handleSubmit: function() {
                 this.checkInput()
                 if(!this.error.firstname && !this.error.name && !this.error.email && !this.error.password &&  !this.error.passwordConfirm) {
-                    axios.post('users/signup', {
+                    let data = {
                         firstname: this.user.firstname,
                         name: this.user.name,
                         email: this.user.email,
                         password: this.user.password,
                         password_confirm: this.user.passwordConfirm
-                    })
-                    .then (res => {
-                        console.log(res);
-                        this.$router.push('/login')
-                    })
-                    .catch (error => {
-                        console.log(error);
+                    }
+                    axios.post('users/signup', data)
+                    .then (() => this.$router.push('/login'))
+                    .catch (() => {
                         this.error.login = true
                         document.querySelector('#message').innerHtml = "Il y a eu un problème"
                     })

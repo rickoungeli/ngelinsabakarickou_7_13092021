@@ -1,6 +1,7 @@
 const model = require('../models/models')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const fs = require('file-system')
 const RANDOM_TOKEN_SECRET = process.env.DB_RANDOM_TOKEN_SECRET
 
 
@@ -115,4 +116,23 @@ exports.updateUserPassword = (req, res, next)=>{
         .catch(error => res.status(500).send({  error  }))
     })  
     .catch(error => res.status(500).send({  error  }))  
+}
+
+//Fonction pour supprimer un utilisateur
+exports.deleteUser = (req, res, next)=>{ 
+    
+    //Suppression de la photo de profin
+    model.User.findOne({where: { id: req.params.id }})
+    .then((user) => {
+        console.log(user.picture_url)
+        const filename = user.picture_url.split("/images")[1]
+        fs.unlink(`images/${filename}`, () => {
+            //suppression de l'utilisateur
+            model.User.destroy({where: { id: req.params.id }})
+            .then( () =>{ res.status(200).send({ 'message': 'Utilisateur supprimé'})})
+            .catch(error => { res.status(400).send({ error })})
+        } )
+    })
+    .catch(error => { res.status(500).send({ error })  })
+    
 }

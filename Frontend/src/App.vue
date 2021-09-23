@@ -1,9 +1,9 @@
 <template>
   <main id="app">
 
-    <div class="container w-100" >
+    <div class="container" >
       <Nav/>
-      <div class="bg-light body-min-height perso-css-body">
+      <div class="bg-light body-min-height body-padding-top ">
         <router-view />
       </div>
       
@@ -24,6 +24,7 @@
       const res = JSON.parse(localStorage.getItem('user'))
       this.$store.dispatch('user', res.data)
     },
+    
   }
 </script>
 
@@ -57,6 +58,10 @@
       min-height: 100vh;
   }
 
+  .body-padding-top {
+    padding-top: 120px;
+  }
+
   .form-control:focus {
     border-color: #167bff;
     box-shadow: none;
@@ -77,24 +82,21 @@
     font-style: italic;
   }
   
-  .perso-css-body {
-    padding-top: 120px;
+  .perso-css-form {
+      font-size: .8em;
+      width: 90%;
   }
-    .perso-css-form {
-        font-size: .8em;
-        width: 90%;
-    }
-    @media screen and (min-width: 768px) {
-        .perso-css-form {
-            font-size: 1em;
-            width: 75%;
-        }
-    }
-    @media screen and (min-width: 992px) {
-        .perso-css-form {
-            font-size: 1em;
-            width: 60%;
-        }
-    }
+  @media screen and (min-width: 768px) {
+      .perso-css-form {
+          font-size: 1em;
+          width: 75%;
+      }
+  }
+  @media screen and (min-width: 992px) {
+      .perso-css-form {
+          font-size: 1em;
+          width: 60%;
+      }
+  }
   
 </style>

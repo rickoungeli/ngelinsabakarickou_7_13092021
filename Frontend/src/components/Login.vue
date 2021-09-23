@@ -1,3 +1,4 @@
+
 <template>
      <form @submit.prevent="handleSubmit" class="form bg-light p-3 mx-auto rounded border border-secondary perso-css-form">
 
@@ -32,6 +33,7 @@
 
     export default {
         name: 'Login',
+
         data() {
             return {
                 user: {
@@ -46,30 +48,33 @@
                     email: false,
                     pwd: false,
                     login: false
-                },
+                }
             }
         },
+
+      
         methods: {
-            handleSubmit: function() {
+            handleSubmit() {
                 this.checkInput()
                 if(!this.error.email && !this.error.pwd) {
-                    axios.post('users/login', { email: this.user.email, password: this.user.pwd })
+                    let data = { email: this.user.email, password: this.user.pwd }
+                    axios.post('users/login', data)
                     .then (res => {
                         localStorage.setItem('token', res.data.token)
                         localStorage.setItem('user', JSON.stringify(res.data.user))
                         this.$store.dispatch('user', res.data.user)
                         this.$router.push('/')
                     })
-                    .catch ((error) => {
-                        console.log(error);
+                    .catch (() => {
                         this.error.login = true
                         document.querySelector('#message').innerHtml = "L'email ou le mot de passe sont incorrects"
                     })
                 }
             },
 
-            checkInput: function() {
-                //Check email
+            checkInput() {
+               
+               //Check email
                var regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                 if ( !this.user.email) {
                     this.error.email = true
@@ -88,7 +93,7 @@
                     document.querySelector('#message-email').classList.add('d-none')
                     document.querySelector('#email').classList.remove('border-danger')  
                 }
-
+                
                 //Check password
                 if(!this.user.pwd) {
                     this.error.pwd = true
@@ -107,7 +112,7 @@
                     document.querySelector('#message-pwd').classList.add('d-none') 
                     document.querySelector('#pwd').classList.remove('border-danger') 
                 }
-            },
+            }
         }
     }
 </script>

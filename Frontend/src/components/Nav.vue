@@ -9,7 +9,7 @@
       </div>
     </router-link>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse me-2" id="navbarSupportedContent">
       <ul v-if="!user" class="navbar-nav ms-auto mb-2 mb-lg-0" >
         <li class="nav-item">
           <router-link to="/login" class="nav-link">Se connecter</router-link>
@@ -18,13 +18,14 @@
           <router-link to="/signup" class="nav-link">S'inscrire</router-link>
         </li>
       </ul>
-      <div  v-if="user" class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div  v-if="user" class="collapse navbar-collapse me-5" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <span>{{ user.firstname }}</span> 
               <img  v-if="!pictureUrl" src="../../public/images/profil_picture.png" class="rounded-circle" >
               <img  v-if="pictureUrl" :src="pictureUrl" class="rounded-circle" >
-              <span>{{ user.firstname }}</span>  
+               
             </a>
             
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -84,11 +85,7 @@
     background-color: #fff;
     box-shadow: 0px 14px 20px rgba(34, 35, 58, 0.2);
   }
-  /*
-  .perso-nav {
-    display: inline-block;
-  }
-  */
+
   ul img {
     width: 50px;
   }

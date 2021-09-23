@@ -13,5 +13,5 @@ router.get('/:id', auth, userCtrl.getUser) //Route pour récupérer un utilisate
 router.put('/:id/updateUserPicture', auth, multer, userCtrl.updateUserPicture) //Route pour modifier la photo de profil
 router.put('/:id/updateUserInfos', auth, userCtrl.updateUserInfos) //Route pour modifier les infos de l'utilisateur
 router.put('/:id/updateUserPassword', auth, userCtrl.updateUserPassword) //Route pour modifier les infos de l'utilisateur
-
+router.delete('/:id', auth, userCtrl.deleteUser) //Route pour supprimer un utilisateur
 module.exports = router

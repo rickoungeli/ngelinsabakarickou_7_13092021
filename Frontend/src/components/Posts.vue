@@ -4,15 +4,16 @@
         <!-- ZONE DE SAISIE D'UNE PUBLICATION -->
         <input v-on:click="toggleCreatePost" type="text" placeholder="Votre publication" class="form-control mb-2 mx-auto perso-css-form" >
 
+        <p v-if="!posts" class="alert alert-danger mx-auto perso-css-form">Il s'est passé quelque chose veuillez relancer votre commande svp</p>
         <div class="card mb-2 border-2 border-secondary mx-auto perso-css-form" v-for="(post) in posts" v-bind:key="post.id">
             <!-- L UTILISATEUR QUI A PUBLIE -->
             <section class="card-title d-flex justify-content-between mb-2 bg-secondary " id='user-infos'>
                 <div class="d-flex"> 
                     <img v-if="post.user.picture_url" :src="post.user.picture_url" class="card-img-top profil-picture rounded-circle" alt="">
                     <img v-if="!post.user.picture_url" src="../../public/images/profil_picture.png" class="card-img-top profil-picture rounded-circle" alt=""> 
-                    <div class="card-text">
+                    <div class="card-text d-flex flex-column">
                         <p class="fw-bold m-0 text-shadow"> {{ post.user.firstname }} {{ post.user.name }}  </p>
-                        <small class=" m-0"> Publiée le {{ post.createdAt | toLocaleDateString('fr-FR') }} </small>
+                        <small class=" m-0"> Publiée le {{ post.createdAt | luxon }} </small>
                     </div>
                 </div>
             </section>
@@ -23,9 +24,9 @@
                         <i class="fas fa-ellipsis-v align-middle text-white"></i>
                     </div>
                     <ul class="dropdown-menu bg-dark post-menu ">
-                        <li v-if="user.id==post.user.id" v-on:click="toggleUpdatePost(post)" class="dropdown-item text-white"><i class="fa fa-paste"></i> Modifier </li>
-                        <li><hr class="dropdown-divider text-white"></li>
-                        <li v-if="user.is_moderator==1 || user.id==post.user.id" @click="removePost(post)" class="dropdown-item text-white"><i class="fa fa-trash-o"></i>  Supprimer </li>
+                        <li v-if="user.id==post.user.id" v-on:click="toggleUpdatePost(post)" class="dropdown-item text-white btn"><i class="fa fa-paste"></i> Modifier </li>
+                        <li v-if="user.id==post.user.id"><hr class="dropdown-divider text-white"></li>
+                        <li v-if="user.is_moderator==1 || user.id==post.user.id" @click="removePost(post)" class="dropdown-item text-white btn"><i class="fa fa-trash-o"></i>  Supprimer </li>
                     </ul>
                 </nav>
 
@@ -75,8 +76,8 @@
                                         <i class="fas fa-ellipsis-v align-middle"></i>
                                     </span>
                                     <ul class="dropdown-menu">
-                                        <li v-if="user.is_moderator==1 || user.id==comment.user.id" @click="removeComment(comment, post)" class="dropdown-item" ><i class="fa fa-trash-o"></i> Supprimer</li>
-                                        <li v-if="user.id==comment.user.id" @click="showInputModifyComment(index)" class="dropdown-item" ><i class="fa fa-edit"></i> Modifier</li>
+                                        <li v-if="user.is_moderator==1 || user.id==comment.user.id" @click="removeComment(comment, post)" class="dropdown-item btn" ><i class="fa fa-trash-o"></i> Supprimer</li>
+                                        <li v-if="user.id==comment.user.id" @click="showInputModifyComment(index)" class="dropdown-item btn" ><i class="fa fa-edit"></i> Modifier</li>
                                     </ul>
                                 </nav>
                                    
@@ -124,7 +125,6 @@
         },
         computed: {
             ...mapGetters(['user'])
-
         },
         methods: {
          
@@ -149,7 +149,8 @@
 
             //suppression d'un post
             removePost(post) {
-                axios.delete(`/posts/deletePost/${post.id}`) 
+                let id = post.id
+                axios.delete(`/posts/deletePost/${id}`) 
                 .then(() => this.gettingPosts())
                 .catch (err => console.log(err))
             },
@@ -163,7 +164,8 @@
 
             //Récupèration tous les commentaires d'un post
             gettingComments(post) { 
-                axios.get(`/comments/getComments/${post.id}`) 
+                let id = post.id
+                axios.get(`/comments/getComments/${id}`) 
                 .then (res => this.comments = res.data )
                 .catch (err => console.log(err))
             },
@@ -205,7 +207,8 @@
                 axios.delete(`/comments/deleteComment/${comment.id}`) 
                 .then(() => this.gettingComments(post))
                 .catch (err => console.log(err))
-            }                   
+            },
+          
         }
     }
 </script>
@@ -242,6 +245,10 @@
     }
     .comment {
         width: 100%;
+    }
+
+    .post-menu li:hover {
+        color: #333 !important;
     }
     
     #update-comment-div {

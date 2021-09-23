@@ -85,7 +85,7 @@
         </section>
         <hr/>
 
-        <div class="btn btn-danger">Supprimer mon profil</div>
+        <div @click="deleteUser" class="btn btn-danger">Supprimer mon profil</div>
     </div>
 </template>
 
@@ -206,6 +206,18 @@
                     })
                     .then(() => this.showPasswordForm())
                     .catch (err => console.log(err))
+                }
+            },
+
+            deleteUser(){
+                if(confirm("Etes-vous sûr de vouloir supprimer cet utilisateur ?")){
+                    axios.delete(`users/${this.user.id}`)
+                    .then((res) => {
+                        console.log(res)
+                        this.$store.dispatch('user', '')
+                        this.$router.push('/')
+                    })
+                    .catch(err => console.log(err))
                 }
             },
 
